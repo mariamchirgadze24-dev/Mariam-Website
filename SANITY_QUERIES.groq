@@ -1,0 +1,21 @@
+// List articles by category with pagination
+*[_type == "article" && category == $category]
+| order(date desc)[$offset...$limit]{
+  title, "slug": slug.current, date,
+  coverMedia, category
+}
+
+// Single article by slug
+*[_type == "article" && slug.current == $slug][0]{..., "slug": slug.current}
+
+// Portfolio list (paginated)
+*[_type == "portfolioItem"]
+| order(date desc)[$offset...$limit]{
+  title, "slug": slug.current, heroMedia, date
+}
+
+// Single portfolio item
+*[_type == "portfolioItem" && slug.current == $slug][0]{..., "slug": slug.current}
+
+// Curatorial statement (from a settings doc or a Page doc)
+*[_type == "page" && slug.current == "portfolio-statement"][0]{content}
